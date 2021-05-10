@@ -10,28 +10,36 @@ namespace Business.Concrete
     public class CarManager : ICarService
     {
         ICarDal _carDal;
-        //ToDo: Add business logic in CarManager
         public CarManager(ICarDal carDal)
         {
             _carDal = carDal;
         }
         public void Add(Car car)
         {
-            Console.WriteLine("Adding: {0} \n", car.Description);
-            _carDal.Add(car);
+            if(car.Description.Length > 2 && car.DailyPrice > 0)
+            {
+                _carDal.Add(car);
+            }
         }
         public void Delete(Car car)
         {
-            Console.WriteLine("Deleting: {0} \n", car.Description);
             _carDal.Delete(car);
+        }
+        public void Update(Car car)
+        {
+            _carDal.Update(car);
         }
         public List<Car> GetAll()
         {
             return _carDal.GetAll();
         }
-        public Car GetById(int carId)
+        public List<Car> GetCarsByColorId(int colorId)
         {
-            return _carDal.GetById(carId);
+            return _carDal.GetAll(c => c.ColorId == colorId);
+        }
+        public List<Car> GetCarsByBrandId(int brandId)
+        {
+            return _carDal.GetAll(c => c.BrandId == brandId);
         }
     }
 }
