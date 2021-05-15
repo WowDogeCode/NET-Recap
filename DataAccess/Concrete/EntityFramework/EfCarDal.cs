@@ -29,6 +29,13 @@ namespace DataAccess.Concrete.EntityFramework
                 context.SaveChanges();
             }
         }
+        public Car Get(Expression<Func<Car, bool>> expression)
+        {
+            using (CarRentalDBContext context = new CarRentalDBContext())
+            {
+                return context.Set<Car>().SingleOrDefault(expression);
+            }
+        }
         public void Update(Car entity)
         {
             using (CarRentalDBContext context = new CarRentalDBContext())
@@ -38,7 +45,6 @@ namespace DataAccess.Concrete.EntityFramework
                 context.SaveChanges();
             }
         }
-
         List<Car> IEntityRepository<Car>.GetAll(Expression<Func<Car, bool>> expression)
         {
             using (CarRentalDBContext context = new CarRentalDBContext())

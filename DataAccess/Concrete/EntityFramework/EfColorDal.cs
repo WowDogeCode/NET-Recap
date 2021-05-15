@@ -29,6 +29,15 @@ namespace DataAccess.Concrete.EntityFramework
                 context.SaveChanges();
             }
         }
+
+        public Color Get(Expression<Func<Color, bool>> expression = null)
+        {
+            using (CarRentalDBContext context = new CarRentalDBContext())
+            {
+                return context.Set<Color>().SingleOrDefault(expression);
+            }
+        }
+
         public List<Color> GetAll(Expression<Func<Color, bool>> expression = null)
         {
             using (CarRentalDBContext context = new CarRentalDBContext())

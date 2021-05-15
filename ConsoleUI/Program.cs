@@ -18,7 +18,7 @@ namespace ConsoleUI
             EfDalTest();
         }
 
-        static void InMemoryDalTest()
+        private static void InMemoryDalTest()
         {
             List<Car> carsList = new List<Car>
             {
@@ -56,11 +56,11 @@ namespace ConsoleUI
                 Console.WriteLine(car.Description);
             }
         }
-        static void EfDalTest()
+        private static void EfDalTest()
         {
             CarManager carManager = new CarManager(new EfCarDal());
 
-            Car car1 = new Car { CarId = 7, BrandId = 10, ColorId = 7, DailyPrice = 1250, Description = "Ferrari F430", ModelYear = 2005, Status = "Avaible" };
+            Car car1 = new Car {BrandId = 10, ColorId = 7, DailyPrice = 1250, Description = "Ferrari F430", ModelYear = 2005, Status = "Avaible" };
 
             Console.WriteLine("\nInitial records of Cars table:");
             foreach (Car car in carManager.GetAll())
@@ -97,6 +97,8 @@ namespace ConsoleUI
             {
                 Console.WriteLine(car.Description);
             }
+
+            Console.WriteLine("\nCar with id 1 is: {0}", carManager.GetCarById(1).Description);
         }
     }
 }

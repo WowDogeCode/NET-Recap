@@ -29,6 +29,13 @@ namespace DataAccess.Concrete.EntityFramework
                 context.SaveChanges();
             }
         }
+        public Brand Get(Expression<Func<Brand, bool>> expression)
+        {
+            using (CarRentalDBContext context = new CarRentalDBContext())
+            {
+                return context.Set<Brand>().SingleOrDefault(expression);
+            }
+        }
         public List<Brand> GetAll(Expression<Func<Brand, bool>> expression = null)
         {
             using (CarRentalDBContext context = new CarRentalDBContext())
@@ -37,7 +44,6 @@ namespace DataAccess.Concrete.EntityFramework
                     ? context.Set<Brand>().ToList()
                     : context.Set<Brand>().Where(expression).ToList();
             }
-            
         }
         public void Update(Brand entity)
         {

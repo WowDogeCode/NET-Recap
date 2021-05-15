@@ -25,6 +25,12 @@ namespace DataAccess.Concrete.InMemory
             var carToDelete = _cars.SingleOrDefault(c => c.CarId == car.CarId);
             _cars.Remove(carToDelete);
         }
+
+        public Car Get(Expression<Func<Car, bool>> expression)
+        {
+            throw new NotImplementedException();
+        }
+
         public List<Car> GetAll(Expression<Func<Car, bool>> expression = null)
         {
             return expression == null
