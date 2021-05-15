@@ -1,5 +1,6 @@
 ﻿using DataAccess.Abstract;
 using Entities.Concrete;
+using Entities.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -44,6 +45,38 @@ namespace DataAccess.Concrete.InMemory
         public void Update(Car entity)
         {
             throw new NotImplementedException();
+        }
+        public List<CarDetailDto> GetCarDetails()
+        {
+            List<Color> colors = new List<Color>()
+            {
+                new Color{ColorId = 1, ColorName = "Black"},
+                new Color{ColorId = 2, ColorName = "Red"},
+                new Color{ColorId = 3, ColorName = "Blue"},
+                new Color{ColorId = 4, ColorName = "Brown"}
+            };
+
+            List<Brand> brands = new List<Brand>()
+            {
+                new Brand{BrandId = 1, BrandName = "Subaru"},
+                new Brand{BrandId = 2, BrandName = "Ford"},
+                new Brand{BrandId = 3, BrandName = "Honda"},
+                new Brand{BrandId = 4, BrandName = "Toyota"}
+            };
+
+            var result = from car in _cars
+                         join color in colors
+                         on car.ColorId equals color.ColorId
+                         join brand in brands
+                         on car.BrandId equals brand.BrandId
+                         select new CarDetailDto
+                         {
+                             CarName = car.CarName,
+                             ColorName = color.ColorName,
+                             BrandName = brand.BrandName,
+                             DailyPrice = car.DailyPrice
+                         };
+            return result.ToList();
         }
     }
 }
