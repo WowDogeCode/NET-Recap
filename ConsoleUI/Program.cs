@@ -1,12 +1,10 @@
 ﻿using Business.Abstract;
 using Business.Concrete;
-using DataAccess.Abstract;
 using DataAccess.Concrete.EntityFramework;
 using DataAccess.Concrete.InMemory;
 using Entities.Concrete;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace ConsoleUI
 {
@@ -15,7 +13,9 @@ namespace ConsoleUI
         static void Main(string[] args)
         {
             InMemoryDalTest();
-            EfDalTest();
+            EfCarDalTest();
+            EfColorDalTest();
+            EfBrandDalTest();
         }
 
         private static void InMemoryDalTest()
@@ -31,7 +31,7 @@ namespace ConsoleUI
             ICarService carManager = new CarManager(new InMemoryCarDal(carsList));
 
             Car car1 = new Car { CarId = 5, BrandId = 1, ColorId = 7, DailyPrice = 280, Description = "Nissan Qashqai", ModelYear = 2016, Status = "Booked" };
-            
+
             Console.WriteLine("Initial list of cars: \n");
             foreach (Car car in carManager.GetAll())
             {
@@ -40,7 +40,7 @@ namespace ConsoleUI
 
             Console.WriteLine("\nAdding {0} to inventory \n", car1.Description);
             carManager.Add(car1);
-            
+
             Console.WriteLine("List of cars: \n");
             foreach (Car car in carManager.GetAll())
             {
@@ -56,11 +56,11 @@ namespace ConsoleUI
                 Console.WriteLine(car.Description);
             }
         }
-        private static void EfDalTest()
+        private static void EfCarDalTest()
         {
             CarManager carManager = new CarManager(new EfCarDal());
 
-            Car car1 = new Car {BrandId = 10, ColorId = 7, DailyPrice = 1250, Description = "Ferrari F430", ModelYear = 2005, Status = "Avaible" };
+            Car car1 = new Car { BrandId = 10, ColorId = 7, DailyPrice = 1250, Description = "Ferrari F430", ModelYear = 2005, Status = "Avaible" };
 
             Console.WriteLine("\nInitial records of Cars table:");
             foreach (Car car in carManager.GetAll())
@@ -99,6 +99,76 @@ namespace ConsoleUI
             }
 
             Console.WriteLine("\nCar with id 1 is: {0}", carManager.GetCarById(1).Description);
+        }
+        private static void EfColorDalTest()
+        {
+            ColorManager colorManager = new ColorManager(new EfColorDal());
+
+            Color color1 = new Color()
+            {
+                ColorName = "Aqua"
+            };
+
+            Console.WriteLine("\nInitial records of Colors table: ");
+            foreach (Color color in colorManager.GetAll())
+            {
+                Console.WriteLine(color.ColorName);
+            }
+
+            Console.WriteLine("\nAdding color: {0} to Colors table", color1.ColorName);
+            colorManager.Add(color1);
+
+            Console.WriteLine("\nList of colors: ");
+            foreach (Color color in colorManager.GetAll())
+            {
+                Console.WriteLine(color.ColorName);
+            }
+
+            Console.WriteLine("\nRemoving color: {0} from Colors table", color1.ColorName);
+            colorManager.Delete(color1);
+
+            Console.WriteLine("\nList of colors: ");
+            foreach (Color color in colorManager.GetAll())
+            {
+                Console.WriteLine(color.ColorName);
+            }
+
+            Console.WriteLine("\nCar with id 1 is: {0}", colorManager.GetById(1).ColorName);
+        }
+        private static void EfBrandDalTest()
+        {
+            BrandManager brandManager = new BrandManager(new EfBrandDal());
+
+            Brand brand1 = new Brand()
+            {
+                BrandName = "Scania"
+            };
+
+            Console.WriteLine("\nInitial records of Brands table: ");
+            foreach (Brand brand in brandManager.GetAll())
+            {
+                Console.WriteLine(brand.BrandName);
+            }
+
+            Console.WriteLine("\nAdding brand: {0} to Brands table", brand1.BrandName);
+            brandManager.Add(brand1);
+
+            Console.WriteLine("\nList of brands: ");
+            foreach (Brand brand in brandManager.GetAll())
+            {
+                Console.WriteLine(brand.BrandName);
+            }
+
+            Console.WriteLine("\nRemoving brand: {0} from Brands table", brand1.BrandName);
+            brandManager.Delete(brand1);
+
+            Console.WriteLine("\nList of brands: ");
+            foreach (Brand brand in brandManager.GetAll())
+            {
+                Console.WriteLine(brand.BrandName);
+            }
+
+            Console.WriteLine("\nBrand with id 1 is: {0}", brandManager.GetById(1).BrandName);
         }
     }
 }

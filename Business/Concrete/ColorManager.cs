@@ -15,7 +15,6 @@ namespace Business.Concrete
         {
             _colorDal = colorDal;
         }
-
         public void Add(Color color)
         {
             _colorDal.Add(color);
@@ -27,6 +26,10 @@ namespace Business.Concrete
         public List<Color> GetAll()
         {
             return _colorDal.GetAll();
+        }
+        public Color GetById(int colorId)
+        {
+            return _colorDal.GetById(c => c.ColorId == colorId);
         }
         public void Update(Color color)
         {
