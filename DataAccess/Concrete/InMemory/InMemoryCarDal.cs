@@ -26,7 +26,7 @@ namespace DataAccess.Concrete.InMemory
             _cars.Remove(carToDelete);
         }
 
-        public Car Get(Expression<Func<Car, bool>> expression)
+        public Car GetById(Expression<Func<Car, bool>> expression)
         {
             throw new NotImplementedException();
         }

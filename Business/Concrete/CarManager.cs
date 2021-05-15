@@ -43,7 +43,7 @@ namespace Business.Concrete
         }
         public Car GetCarById(int carId)
         {
-            return _carDal.Get(c => c.CarId == carId);
+            return _carDal.GetById(c => c.CarId == carId);
         }
     }
 }
