@@ -13,10 +13,10 @@ namespace ConsoleUI
     {
         static void Main(string[] args)
         {
-            InMemoryDalTest();
+            //InMemoryDalTest();
             EfCarDalTest();
-            EfColorDalTest();
-            EfBrandDalTest();
+            //EfColorDalTest();
+            //EfBrandDalTest();
         }
 
         private static void InMemoryDalTest()
@@ -110,7 +110,7 @@ namespace ConsoleUI
             Console.WriteLine("\nCar details are as follows: ");
             foreach (CarDetailDto car in carManager.GetCarDetails())
             {
-                Console.WriteLine("Car name: {0}, Brand: {1}, Color: {2}, Daily price: {3}", car.CarName, car.BrandName, car.ColorName, car.DailyPrice);
+                Console.WriteLine("Car name: {0}, Brand: {1}, Color: {2}, Daily price: {3}", car.CarName.Trim(), car.BrandName.Trim(), car.ColorName.Trim(), car.DailyPrice);
             }
         }
         private static void EfColorDalTest()
