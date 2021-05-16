@@ -1,5 +1,6 @@
 ﻿using Business.Abstract;
 using Business.Concrete;
+using Business.Constants;
 using DataAccess.Concrete.EntityFramework;
 using DataAccess.Concrete.InMemory;
 using Entities.Concrete;
@@ -13,10 +14,10 @@ namespace ConsoleUI
     {
         static void Main(string[] args)
         {
-            //InMemoryDalTest();
+            InMemoryDalTest();
             EfCarDalTest();
-            //EfColorDalTest();
-            //EfBrandDalTest();
+            EfColorDalTest();
+            EfBrandDalTest();
         }
 
         private static void InMemoryDalTest()
@@ -34,7 +35,7 @@ namespace ConsoleUI
             Car car1 = new Car { CarId = 5, BrandId = 1, ColorId = 7, CarName = "Nissan Qashqai", DailyPrice = 280, Description = "Nissan Qashqai", ModelYear = 2016, Status = "Booked" };
 
             Console.WriteLine("Initial list of cars: \n");
-            foreach (Car car in carManager.GetAll())
+            foreach (Car car in carManager.GetAll().Data)
             {
                 Console.WriteLine(car.CarName);
             }
@@ -43,7 +44,7 @@ namespace ConsoleUI
             carManager.Add(car1);
 
             Console.WriteLine("List of cars: \n");
-            foreach (Car car in carManager.GetAll())
+            foreach (Car car in carManager.GetAll().Data)
             {
                 Console.WriteLine(car.CarName);
             }
@@ -52,13 +53,13 @@ namespace ConsoleUI
             carManager.Delete(car1);
 
             Console.WriteLine("List of cars: \n");
-            foreach (Car car in carManager.GetAll())
+            foreach (Car car in carManager.GetAll().Data)
             {
                 Console.WriteLine(car.CarName);
             }
 
             Console.WriteLine("\nCar details are as follows: ");
-            foreach (CarDetailDto car in carManager.GetCarDetails())
+            foreach (CarDetailDto car in carManager.GetCarDetails().Data)
             {
                 Console.WriteLine("Car name: {0}, Brand: {1}, Color: {2}, Daily price: {3}", car.CarName, car.BrandName, car.ColorName, car.DailyPrice);
             }
@@ -70,7 +71,7 @@ namespace ConsoleUI
             Car car1 = new Car { BrandId = 10, ColorId = 7, CarName = "Ferrari F430", DailyPrice = 1250, Description = "Ferrari F430", ModelYear = 2005, Status = "Avaible" };
 
             Console.WriteLine("\nInitial records of Cars table:");
-            foreach (Car car in carManager.GetAll())
+            foreach (Car car in carManager.GetAll().Data)
             {
                 Console.WriteLine(car.CarName);
             }
@@ -79,7 +80,7 @@ namespace ConsoleUI
             carManager.Add(car1);
 
             Console.WriteLine("List of cars:");
-            foreach (Car car in carManager.GetAll())
+            foreach (Car car in carManager.GetAll().Data)
             {
                 Console.WriteLine(car.CarName);
             }
@@ -88,27 +89,27 @@ namespace ConsoleUI
             carManager.Delete(car1);
 
             Console.WriteLine("List of records in Cars table:");
-            foreach (Car car in carManager.GetAll())
+            foreach (Car car in carManager.GetAll().Data)
             {
                 Console.WriteLine(car.CarName);
             }
 
             Console.WriteLine("\nList of cars with BMW brand:");
-            foreach (Car car in carManager.GetCarsByBrandId(3))
+            foreach (Car car in carManager.GetCarsByBrandId(3).Data)
             {
                 Console.WriteLine(car.CarName);
             }
 
             Console.WriteLine("\nList of silver cars:");
-            foreach (Car car in carManager.GetCarsByColorId(10))
+            foreach (Car car in carManager.GetCarsByColorId(10).Data)
             {
                 Console.WriteLine(car.CarName);
             }
 
-            Console.WriteLine("\nCar with id 1 is: {0}", carManager.GetCarById(1).CarName);
+            Console.WriteLine("\nCar with id 1 is: {0}", carManager.GetCarById(1).Data.CarName);
 
             Console.WriteLine("\nCar details are as follows: ");
-            foreach (CarDetailDto car in carManager.GetCarDetails())
+            foreach (CarDetailDto car in carManager.GetCarDetails().Data)
             {
                 Console.WriteLine("Car name: {0}, Brand: {1}, Color: {2}, Daily price: {3}", car.CarName.Trim(), car.BrandName.Trim(), car.ColorName.Trim(), car.DailyPrice);
             }
@@ -123,7 +124,7 @@ namespace ConsoleUI
             };
 
             Console.WriteLine("\nInitial records of Colors table: ");
-            foreach (Color color in colorManager.GetAll())
+            foreach (Color color in colorManager.GetAll().Data)
             {
                 Console.WriteLine(color.ColorName);
             }
@@ -132,7 +133,7 @@ namespace ConsoleUI
             colorManager.Add(color1);
 
             Console.WriteLine("\nList of colors: ");
-            foreach (Color color in colorManager.GetAll())
+            foreach (Color color in colorManager.GetAll().Data)
             {
                 Console.WriteLine(color.ColorName);
             }
@@ -141,12 +142,12 @@ namespace ConsoleUI
             colorManager.Delete(color1);
 
             Console.WriteLine("\nList of colors: ");
-            foreach (Color color in colorManager.GetAll())
+            foreach (Color color in colorManager.GetAll().Data)
             {
                 Console.WriteLine(color.ColorName);
             }
 
-            Console.WriteLine("\nCar with id 1 is: {0}", colorManager.GetById(1).ColorName);
+            Console.WriteLine("\nCar with id 1 is: {0}", colorManager.GetById(1).Data.ColorName);
         }
         private static void EfBrandDalTest()
         {
@@ -158,7 +159,7 @@ namespace ConsoleUI
             };
 
             Console.WriteLine("\nInitial records of Brands table: ");
-            foreach (Brand brand in brandManager.GetAll())
+            foreach (Brand brand in brandManager.GetAll().Data)
             {
                 Console.WriteLine(brand.BrandName);
             }
@@ -167,7 +168,7 @@ namespace ConsoleUI
             brandManager.Add(brand1);
 
             Console.WriteLine("\nList of brands: ");
-            foreach (Brand brand in brandManager.GetAll())
+            foreach (Brand brand in brandManager.GetAll().Data)
             {
                 Console.WriteLine(brand.BrandName);
             }
@@ -176,12 +177,12 @@ namespace ConsoleUI
             brandManager.Delete(brand1);
 
             Console.WriteLine("\nList of brands: ");
-            foreach (Brand brand in brandManager.GetAll())
+            foreach (Brand brand in brandManager.GetAll().Data)
             {
                 Console.WriteLine(brand.BrandName);
             }
 
-            Console.WriteLine("\nBrand with id 1 is: {0}", brandManager.GetById(1).BrandName);
+            Console.WriteLine("\nBrand with id 1 is: {0}", brandManager.GetById(1).Data.BrandName);
         }
     }
 }
