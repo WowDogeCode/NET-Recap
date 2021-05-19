@@ -15,5 +15,7 @@ namespace Business.Constants
         public static string ColorsListed = string.Format("Colors are listed");
         public static string BrandsListed = string.Format("Brands are listed");
         public static string InformationInvalid = string.Format("{0} information is invalid", typeof(T).Name);
+        public static string CarUnavaible = string.Format("The car you picked is not avaible for rent");
+        public static string CarRented = string.Format("Car is rented");
     }
 }
