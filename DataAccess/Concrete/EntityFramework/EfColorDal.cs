@@ -5,7 +5,5 @@ using System;
 
 namespace DataAccess.Concrete.EntityFramework
 {
-    public class EfColorDal : EfEntityRepositoryBase<Color, CarRentalDBContext>, IColorDal
-    {
-    }
+    public class EfColorDal : EfEntityRepositoryBase<Color, CarRentalDBContext>, IColorDal { }
 }
