@@ -9,14 +9,5 @@ using System.Linq;
 
 namespace DataAccess.Concrete.EntityFramework
 {
-    public class EfRentalDal : EfEntityRepositoryBase<Rental, CarRentalDBContext>, IRentalDal
-    {
-        public override Rental GetById(Expression<Func<Rental, bool>> expression)
-        {
-            using (CarRentalDBContext context = new CarRentalDBContext())
-            {
-                return context.Set<Rental>().Where(expression).OrderByDescending(r => r.ReturnDate)?.First();
-            }
-        }
-    }
+    public class EfRentalDal : EfEntityRepositoryBase<Rental, CarRentalDBContext>, IRentalDal { }
 }

@@ -30,7 +30,7 @@ namespace Core.DataAccess.EntityFramework
                 context.SaveChanges();
             }
         }
-        public virtual TEntity GetById(Expression<Func<TEntity, bool>> expression)
+        public TEntity GetById(Expression<Func<TEntity, bool>> expression)
         {
             using (TContext context = new TContext())
             {
