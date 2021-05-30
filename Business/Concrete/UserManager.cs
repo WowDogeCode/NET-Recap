@@ -1,5 +1,6 @@
 ﻿using Business.Abstract;
 using Business.Constants;
+using Business.ValidationRules.FluentValidation;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using DataAccess.Concrete.EntityFramework;
@@ -13,14 +14,20 @@ namespace Business.Concrete
     public class UserManager : IUserService
     {
         IUserDal _userDal;
+        UserValidator userValidator = new UserValidator();
         public UserManager(IUserDal userDal)
         {
             _userDal = userDal;
         }
         public IResult Add(User user)
         {
-            _userDal.Add(user);
-            return new SuccessfulResult(Messages<User>.Added);
+            var result = userValidator.Validate(user);
+            if(result.IsValid == true)
+            {
+                _userDal.Add(user);
+                return new SuccessfulResult(Messages<User>.Added);
+            }
+            return new ErrorResult();
         }
         public IResult Delete(User user)
         {
@@ -33,8 +40,13 @@ namespace Business.Concrete
         }
         public IResult Update(User user)
         {
-            _userDal.Update(user);
-            return new SuccessfulResult(Messages<User>.Updated);
+            var result = userValidator.Validate(user);
+            if(result.IsValid == true)
+            {
+                _userDal.Update(user);
+                return new SuccessfulResult(Messages<User>.Updated);
+            }
+            return new ErrorResult();
         }
     }
 }

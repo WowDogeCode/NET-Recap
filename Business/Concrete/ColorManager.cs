@@ -1,4 +1,5 @@
 ﻿using Business.Abstract;
+using Business.ValidationRules.FluentValidation;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
@@ -11,15 +12,20 @@ namespace Business.Concrete
     public class ColorManager : IColorService
     {
         IColorDal _colorDal;
-
+        ColorValidator colorValidator = new ColorValidator();
         public ColorManager(IColorDal colorDal)
         {
             _colorDal = colorDal;
         }
         public IResult Add(Color color)
         {
-            _colorDal.Add(color);
-            return new SuccessfulResult();
+            var result = colorValidator.Validate(color);
+            if (result.IsValid == true)
+            {
+                _colorDal.Add(color);
+                return new SuccessfulResult();
+            }
+            return new ErrorResult();
         }
         public IResult Delete(Color color)
         {
@@ -36,8 +42,13 @@ namespace Business.Concrete
         }
         public IResult Update(Color color)
         {
-            _colorDal.Update(color);
-            return new SuccessfulResult();
+            var result = colorValidator.Validate(color);
+            if (result.IsValid == true)
+            {
+                _colorDal.Update(color);
+                return new SuccessfulResult();
+            }
+            return new ErrorResult();
         }
     }
 }

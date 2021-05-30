@@ -1,9 +1,11 @@
 ﻿using Business.Abstract;
 using Business.Constants;
+using Business.ValidationRules.FluentValidation;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
 using Entities.DTOs;
+using FluentValidation;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -13,17 +15,21 @@ namespace Business.Concrete
     public class CarManager : ICarService
     {
         ICarDal _carDal;
+        CarValidator carValidator = new CarValidator();
         public CarManager(ICarDal carDal)
         {
             _carDal = carDal;
         }
         public IResult Add(Car car)
         {
-            if(car.Description.Length > 2 && car.DailyPrice > 0)
+            var result = carValidator.Validate(car);
+
+            if(result.IsValid == true)
             {
                 _carDal.Add(car);
                 return new SuccessfulResult(Messages<Car>.Added);
             }
+
             return new ErrorResult(Messages<Car>.InformationInvalid);
         }
         public IResult Delete(Car car)
@@ -33,8 +39,14 @@ namespace Business.Concrete
         }
         public IResult Update(Car car)
         {
-            _carDal.Update(car);
-            return new SuccessfulResult(Messages<Car>.Updated);
+            var result = carValidator.Validate(car);
+
+            if (result.IsValid == true)
+            {
+                _carDal.Update(car);
+                return new SuccessfulResult(Messages<Car>.Added);
+            }
+            return new ErrorResult();
         }
         public IDataResult<List<Car>> GetAll()
         {

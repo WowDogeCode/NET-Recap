@@ -1,5 +1,6 @@
 ﻿using Business.Abstract;
 using Business.Constants;
+using Business.ValidationRules.FluentValidation;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using DataAccess.Concrete.EntityFramework;
@@ -13,15 +14,18 @@ namespace Business.Concrete
     public class RentalManager : IRentalService
     {
         IRentalDal _rentalDal;
+        RentalValidator rentalValidator = new RentalValidator();
         public RentalManager(IRentalDal rentalDal)
         {
             _rentalDal = rentalDal;
         }
         public IResult Rent(Rental rental)
         {
+            //TODO: Review here
             var tempCar = _rentalDal.GetAll().FindLast(r => r.CarId == rental.CarId);
-
-            if(tempCar == null || tempCar?.ReturnDate != null)
+            var result = rentalValidator.Validate(rental);
+            
+            if(tempCar == null || tempCar?.ReturnDate != null && result.IsValid)
             {
                 _rentalDal.Add(rental);
                 return new SuccessfulResult(Messages<Rental>.CarRented);
@@ -39,8 +43,13 @@ namespace Business.Concrete
         }
         public IResult Update(Rental rental)
         {
-            _rentalDal.Update(rental);
-            return new SuccessfulResult(Messages<Rental>.Updated);
+            var result = rentalValidator.Validate(rental);
+            if(result.IsValid == true)
+            {
+                _rentalDal.Update(rental);
+                return new SuccessfulResult(Messages<Rental>.Updated);
+            }
+            return new ErrorResult();
         }
     }
 }
