@@ -1,6 +1,7 @@
 ﻿using Business.Abstract;
 using Business.Constants;
 using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Validation;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
@@ -20,17 +21,12 @@ namespace Business.Concrete
         {
             _carDal = carDal;
         }
+
+        [ValidationAspect(typeof(CarValidator))]
         public IResult Add(Car car)
         {
-            var result = carValidator.Validate(car);
-
-            if(result.IsValid == true)
-            {
-                _carDal.Add(car);
-                return new SuccessfulResult(Messages<Car>.Added);
-            }
-
-            return new ErrorResult(Messages<Car>.InformationInvalid);
+            _carDal.Add(car);
+            return new SuccessfulResult(Messages<Car>.Added);
         }
         public IResult Delete(Car car)
         {
