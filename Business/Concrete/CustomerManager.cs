@@ -1,6 +1,7 @@
 ﻿using Business.Abstract;
 using Business.Constants;
 using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Validation;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
@@ -13,20 +14,17 @@ namespace Business.Concrete
     public class CustomerManager : ICustomerService
     {
         ICustomerDal _customerDal;
-        CustomerValidator customerValidator = new CustomerValidator();
         public CustomerManager(ICustomerDal customerDal)
         {
             _customerDal = customerDal;
         }
+
+        [ValidationAspect(typeof(Customer))]
         public IResult Add(Customer customer)
         {
-            var result = customerValidator.Validate(customer);
-            if(result.IsValid == true)
-            {
-                _customerDal.Add(customer);
-                return new SuccessfulResult(Messages<Customer>.Added);
-            }
-            return new ErrorResult();
+            _customerDal.Add(customer);
+            return new SuccessfulResult(Messages<Customer>.Added);
+
         }
 
         public IResult Delete(Customer customer)
@@ -40,15 +38,11 @@ namespace Business.Concrete
             return new SuccessfulDataResult<List<Customer>>(_customerDal.GetAll());
         }
 
+        [ValidationAspect(typeof(Customer))]
         public IResult Update(Customer customer)
         {
-            var result = customerValidator.Validate(customer);
-            if(result.IsValid == true)
-            {
-                _customerDal.Update(customer);
-                return new SuccessfulResult(Messages<Customer>.Updated);
-            }
-            return new ErrorResult();
+            _customerDal.Update(customer);
+            return new SuccessfulResult(Messages<Customer>.Updated);
         }
     }
 }

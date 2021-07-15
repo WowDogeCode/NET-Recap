@@ -1,5 +1,6 @@
 ﻿using Business.Abstract;
 using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Validation;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
@@ -12,21 +13,17 @@ namespace Business.Concrete
     public class BrandManager : IBrandService
     {
         IBrandDal _brandDal;
-        BrandValidator brandValidator = new BrandValidator();
 
         public BrandManager(IBrandDal brandDal)
         {
             _brandDal = brandDal;
         }
+
+        [ValidationAspect(typeof(Brand))]
         public IResult Add(Brand brand)
         {
-            var result = brandValidator.Validate(brand);
-            if(result.IsValid == true)
-            {
-                _brandDal.Add(brand);
-                return new SuccessfulResult();
-            }
-            return new ErrorResult();
+            _brandDal.Add(brand);
+            return new SuccessfulResult();
         }
         public IResult Delete(Brand brand)
         {
@@ -41,15 +38,12 @@ namespace Business.Concrete
         {
             return new SuccessfulDataResult<Brand>(_brandDal.GetById(b => b.BrandId == brandId));
         }
+
+        [ValidationAspect(typeof(Brand))]
         public IResult Update(Brand brand)
         {
-            var result = brandValidator.Validate(brand);
-            if(result.IsValid == true)
-            {
-                _brandDal.Update(brand);
-                return new SuccessfulResult();
-            }
-            return new ErrorResult();
+            _brandDal.Update(brand);
+            return new SuccessfulResult();
         }
     }
 }

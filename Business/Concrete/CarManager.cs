@@ -16,7 +16,6 @@ namespace Business.Concrete
     public class CarManager : ICarService
     {
         ICarDal _carDal;
-        CarValidator carValidator = new CarValidator();
         public CarManager(ICarDal carDal)
         {
             _carDal = carDal;
@@ -33,16 +32,12 @@ namespace Business.Concrete
             _carDal.Delete(car);
             return new SuccessfulResult(Messages<Car>.Deleted);
         }
+
+        [ValidationAspect(typeof(CarValidator))]
         public IResult Update(Car car)
         {
-            var result = carValidator.Validate(car);
-
-            if (result.IsValid == true)
-            {
-                _carDal.Update(car);
-                return new SuccessfulResult(Messages<Car>.Added);
-            }
-            return new ErrorResult();
+            _carDal.Update(car);
+            return new SuccessfulResult(Messages<Car>.Added);
         }
         public IDataResult<List<Car>> GetAll()
         {

@@ -11,7 +11,6 @@ namespace Business.ValidationRules.FluentValidation
         public RentalValidator()
         {
             RuleFor(r => r.RentDate).NotEmpty().LessThan(DateTime.Now.AddSeconds(1));
-            RuleFor(r => r.ReturnDate).GreaterThan(r => r.RentDate).When(r => r.ReturnDate.HasValue);
         }
     }
 }

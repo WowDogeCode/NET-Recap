@@ -1,6 +1,7 @@
 ﻿using Business.Abstract;
 using Business.Constants;
 using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Validation;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using DataAccess.Concrete.EntityFramework;
@@ -14,18 +15,17 @@ namespace Business.Concrete
     public class RentalManager : IRentalService
     {
         IRentalDal _rentalDal;
-        RentalValidator rentalValidator = new RentalValidator();
         public RentalManager(IRentalDal rentalDal)
         {
             _rentalDal = rentalDal;
         }
+
+        [ValidationAspect(typeof(RentalValidator))]
         public IResult Rent(Rental rental)
         {
-            //TODO: Review here
             var tempCar = _rentalDal.GetAll().FindLast(r => r.CarId == rental.CarId);
-            var result = rentalValidator.Validate(rental);
-            
-            if(tempCar == null || tempCar?.ReturnDate != null && result.IsValid)
+
+            if (tempCar == null || tempCar?.ReturnDate != null)
             {
                 _rentalDal.Add(rental);
                 return new SuccessfulResult(Messages<Rental>.CarRented);
@@ -41,15 +41,12 @@ namespace Business.Concrete
         {
             return new SuccessfulDataResult<List<Rental>>(_rentalDal.GetAll());
         }
+
+        [ValidationAspect(typeof(RentalValidator))]
         public IResult Update(Rental rental)
         {
-            var result = rentalValidator.Validate(rental);
-            if(result.IsValid == true)
-            {
-                _rentalDal.Update(rental);
-                return new SuccessfulResult(Messages<Rental>.Updated);
-            }
-            return new ErrorResult();
+            _rentalDal.Update(rental);
+            return new SuccessfulResult(Messages<Rental>.Updated);
         }
     }
 }
