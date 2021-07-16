@@ -33,7 +33,7 @@ namespace WebAPI.Controllers
         [HttpPost("add")]
         public IActionResult Add(Rental rental)
         {
-            var result = _rentalService.Rent(rental);
+            var result = _rentalService.Add(rental);
             if (result.Successful)
             {
                 return Ok(result);
@@ -44,7 +44,7 @@ namespace WebAPI.Controllers
         [HttpDelete("delete")]
         public IActionResult Delete(Rental rental)
         {
-            var result = _rentalService.Cancel(rental);
+            var result = _rentalService.Delete(rental);
             if (result.Successful)
             {
                 return Ok(result);

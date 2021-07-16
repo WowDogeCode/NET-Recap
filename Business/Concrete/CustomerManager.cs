@@ -24,7 +24,6 @@ namespace Business.Concrete
         {
             _customerDal.Add(customer);
             return new SuccessfulResult(Messages<Customer>.Added);
-
         }
 
         public IResult Delete(Customer customer)

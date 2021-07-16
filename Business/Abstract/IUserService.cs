@@ -6,11 +6,7 @@ using System.Text;
 
 namespace Business.Abstract
 {
-    public interface IUserService
+    public interface IUserService : IServiceRepository<User>
     {
-        IResult Add(User user);
-        IResult Delete(User user);
-        IResult Update(User user);
-        IDataResult<List<User>> GetAll();
     }
 }

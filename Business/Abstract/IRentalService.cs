@@ -6,11 +6,7 @@ using System.Text;
 
 namespace Business.Abstract
 {
-    public interface IRentalService
+    public interface IRentalService : IServiceRepository<Rental>
     {
-        IResult Rent(Rental rental);
-        IResult Cancel(Rental rental);
-        IResult Update(Rental rental);
-        IDataResult<List<Rental>> GetAll();
     }
 }

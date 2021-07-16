@@ -21,7 +21,7 @@ namespace Business.Concrete
         }
 
         [ValidationAspect(typeof(RentalValidator))]
-        public IResult Rent(Rental rental)
+        public IResult Add(Rental rental)
         {
             var tempCar = _rentalDal.GetAll().FindLast(r => r.CarId == rental.CarId);
 
@@ -32,7 +32,7 @@ namespace Business.Concrete
             }
             return new ErrorResult(Messages<Rental>.CarUnavaible);
         }
-        public IResult Cancel(Rental rental)
+        public IResult Delete(Rental rental)
         {
             _rentalDal.Delete(rental);
             return new SuccessfulResult(Messages<Rental>.Deleted);

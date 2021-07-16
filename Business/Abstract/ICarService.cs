@@ -7,15 +7,11 @@ using System.Text;
 
 namespace Business.Abstract
 {
-    public interface ICarService
+    public interface ICarService : IServiceRepository<Car>
     {
         IDataResult<List<Car>> GetCarsByBrandId(int brandId);
         IDataResult<List<Car>> GetCarsByColorId(int colorId);
         IDataResult<Car> GetCarById(int carId);
-        IDataResult<List<Car>> GetAll();
-        IResult Add(Car car);
-        IResult Delete(Car car);
-        IResult Update(Car car);
         IDataResult<List<CarDetailDto>> GetCarDetails();
     }
 }
